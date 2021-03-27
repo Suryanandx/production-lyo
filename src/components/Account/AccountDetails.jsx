@@ -11,14 +11,16 @@ import {
   Container,
   Typography,
   CardActions,
-  Avatar
+  Avatar,
+  InputLabel
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
-import { db } from '../../firebase'
+import { db, storageRef } from '../../firebase'
 import { firebaseLooper } from '../../utils/tools'
 import { useAuth } from '../context/AuthContext'
 import { Link, useHistory } from "react-router-dom"
 import { Alert } from '@material-ui/lab';
+import { useStorage } from '../../utils/useStorage';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -39,9 +41,30 @@ const AccountDetails = () => {
      const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+     const [file, setFile] = useState(null);
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const classes = useStyles();
     const history = useHistory()
+
+     const types = ["image/png", "image/jpeg", "image/jpg"];
+
+    const handleChange = (e) => {
+        let selectedFile = e.target.files[0];
+
+        if (selectedFile) {
+            if (types.includes(selectedFile.type)) {
+                setError(null);
+                setFile(selectedFile);
+            } else {
+                setFile(null);
+                setError("Please select an image file (png or jpg)");
+            }
+        }
+
+        
+    };
+
+     const { progress, url } = useStorage(file);
 
      useEffect(() => {
     db.collection('users').where('email', '==', currentUser.email ).get().then(snapshot => {
@@ -58,6 +81,9 @@ const AccountDetails = () => {
     }
 
       if (password.length <= 8){
+        if(password.length === 0){
+          history.push('/')
+        }
       return setError("Weak Password !")
     }
 
@@ -68,6 +94,8 @@ const AccountDetails = () => {
     setLoading(true)
     setError("")
 
+    db.collection('users').add(url)
+     
     
     try {
       await  updatePassword(password)
@@ -82,7 +110,10 @@ const AccountDetails = () => {
 
     return (
         <Container style={{display: "flex", marginTop: "5%"}}>
-           <Card >
+           <form 
+         
+           >
+      <Card >
       <CardContent>
         <Box
           alignItems="center"
@@ -91,6 +122,7 @@ const AccountDetails = () => {
         >
           <Avatar
             className={classes.avatar}
+            src={url}
           />
           <Typography
             color="textPrimary"
@@ -113,21 +145,21 @@ const AccountDetails = () => {
             
           </Typography>
         </Box>
+        
       </CardContent>
       <Divider />
-      <CardActions>
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
-        >
-          Upload picture
-        </Button>
-      </CardActions>
-      <Divider />
-      <CardActions>
+       <CardActions style={{alignItems: "center"}}>
+      <InputLabel alignItems="center">Upload Avatar image</InputLabel>
+       <input type="file"  onChange={handleChange} />
+       <Button   variant="outlined" color="primary">Upload</Button>
       </CardActions>
     </Card>
+    <Grid>
+      {file && <p>{progress}% uploaded</p>}
+    </Grid>
+    </form>
+
+    
     
     {/* Details */}
         <form className={classes.root} onSubmit={handleSubmit}>
@@ -174,6 +206,8 @@ const AccountDetails = () => {
               />
               
               {error && <Alert severity="error">{error}</Alert>}
+        
+
         </CardContent>
         <Divider />
         <Box
@@ -201,7 +235,7 @@ const AccountDetails = () => {
         </Box>
       </Card>
       </form>
-        </Container>
+    </Container>
     )
 }
 

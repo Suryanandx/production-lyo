@@ -91,7 +91,6 @@ export default function AddUser() {
       await signup(email, password)
       db.collection('users').add(userData)
       history.push("/")
-    
     } catch {
       setError("Failed to create an account")
     }
@@ -237,8 +236,11 @@ export default function AddUser() {
         >
           <option aria-label="None" value="" />
           <option value="Admin">Admin</option>
+          <option value="Trainee">Trainee</option>
+            <option value="Operator">Operator</option>
           <option value="Supervisor">Supervisor</option>
-          <option value="Manager">Manager</option>
+          <option value="Validator">Validator</option>
+           <option value="Maintenance">Maintenance</option>
         </Select>
             </Grid>
             

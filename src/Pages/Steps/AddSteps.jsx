@@ -76,7 +76,7 @@ const AddSteps = ({match}) => {
        setMedia({url: durl})
        console.log(durl)
      })
-   
+  
     const link = media.mediaData[0].name
     const steps = {title, desc, createdAt, cid, link, uniqueKey };
     setLoading(true);

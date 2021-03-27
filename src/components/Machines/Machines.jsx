@@ -44,9 +44,6 @@ const Machines = () => {
         })
      
     }, [])
-
-
-  
     return (
         <Page title="Machines">
         <Container maxWidth>
@@ -71,7 +68,7 @@ const Machines = () => {
                 
                 }
                     
-                    
+         
                 
                 </Container>
 

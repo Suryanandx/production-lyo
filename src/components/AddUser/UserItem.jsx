@@ -205,6 +205,7 @@ const updateUser=(id) => {
                         <InputLabel htmlFor="role-native-simple">Role</InputLabel>
                   <Select
                     native
+                    fullWidth
                     value={role}
                     onChange={(e)=> setRole(e.target.value)}
                     inputProps={{
@@ -212,10 +213,14 @@ const updateUser=(id) => {
                       id: 'role-native-simple',
                     }}
                   >
-                    <option aria-label="None" value="" />
-                    <option value="Admin">Admin</option>
-                    <option value="Supervisor">Supervisor</option>
-                    <option value="Manager">Manager</option>
+                  <option aria-label="None" value="" />
+                <option value="Admin">Admin</option>
+                <option value="Trainee">Trainee</option>
+                  <option value="Operator">Operator</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Validator">Validator</option>
+                <option value="Maintenance">Maintenance</option>
+            
                   </Select>
                       </Grid>
                       
@@ -306,23 +311,12 @@ const updateUser=(id) => {
                           disabled
                         />
                       </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                        value={password}
-                          variant="outlined"
-                          required
-                          fullWidth
-                          id="password"
-                          label="Password"
-                          name="Password"
-                          type="password"
-                          disabled
-                        />
-                      </Grid>
+                      
                       <Grid item xs={12}>
                         <InputLabel htmlFor="role-native-simple">Role</InputLabel>
                   <Select
                     native
+                    fullWidth
                     value={role}
                     disabled
                     inputProps={{
@@ -332,9 +326,12 @@ const updateUser=(id) => {
                   >
                     <option aria-label="None" value="" />
                     <option value="Admin">Admin</option>
+                    <option value="Trainee">Trainee</option>
+                      <option value="Operator">Operator</option>
                     <option value="Supervisor">Supervisor</option>
-                    <option value="Manager">Manager</option>
-                  </Select>
+                    <option value="Validator">Validator</option>
+                    <option value="Maintenance">Maintenance</option>
+                </Select>
                       </Grid>
                       
                     </Grid>
